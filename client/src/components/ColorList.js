@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const initialColor = {
   color: "",
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+const ColorList = (props) => {
+  console.log(props);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -21,17 +22,30 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    axiosWithAuth().put(`colors/${colorToEdit.id}`, colorToEdit)
+    .then(res => {
+      console.log(res)
+      props.history.push(`/bubbles`)
+      props.updateColors(res.data)
+    })
+    .catch(err => console.log(err))
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axiosWithAuth().delete(`/colors/${colorToEdit.id}`)
+    .then(res => {
+      setColorToEdit(res.data)
+      props.history.push(`/bubbles`)
+    })
+    .catch(err => console.log(err))
   };
 
   return (
     <div className="colors-wrap">
       <p>colors</p>
       <ul>
-        {colors.map(color => (
+        {props.colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
               <span className="delete" onClick={e => {
@@ -39,7 +53,7 @@ const ColorList = ({ colors, updateColors }) => {
                     deleteColor(color)
                   }
                 }>
-                  x
+                 x
               </span>{" "}
               {color.color}
             </span>
