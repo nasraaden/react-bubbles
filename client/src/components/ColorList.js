@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-// const initialColor = {
-//   color: "",
-//   code: { hex: "" }
-// };
+const initialColor = {
+  color: "",
+  code: { hex: "" }
+};
 
 const ColorList = ({colors, updateColors}) => {
 
   const [editing, setEditing] = useState(false);
-  const [colorToEdit, setColorToEdit] = useState({color: "", code: {hex: ""}});
+  const [colorToEdit, setColorToEdit] = useState(initialColor);
   const [colorToAdd, setColorToAdd] = useState({id: Date.now(), color: "", code: { hex: "" }})
 
   const editColor = color => {
@@ -22,12 +22,16 @@ const ColorList = ({colors, updateColors}) => {
     axiosWithAuth().put(`colors/${colorToEdit.id}`, colorToEdit)
     .then(res => {
       console.log(res)
-      setColorToEdit(res.data)
-      // updateColors(res.data)
-      // setEditing(false)
+      updateColors(colors.map(color => {
+        if (color.id === colorToEdit.id){
+          return res.data
+        } else {return color} 
+      }))
+      setEditing(false)
     })
     .catch(err => console.log(err))
   };
+  console.log(colors)
 
   const addColor = e => {
     e.preventDefault();
@@ -42,8 +46,9 @@ const ColorList = ({colors, updateColors}) => {
   const deleteColor = color => {
     axiosWithAuth().delete(`/colors/${color.id}`, color)
     .then(res => {
-      console.log(res)
-      updateColors(res.data)
+      updateColors(colors.filter(deleted => {
+          return deleted.id !== color.id
+      }))
     })
     .catch(err => console.log(err))
   };
