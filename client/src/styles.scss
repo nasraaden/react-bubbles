@@ -14,7 +14,6 @@ body,
   font-family: "Montserrat", sans-serif;
   text-align: center;
   display: flex;
-
   svg {
     height: 100%;
   }
@@ -22,6 +21,13 @@ body,
 
 .spacer {
   height: 100%;
+  button {
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 3px 8px;
+    margin: 15px auto;
+  }
 }
 
 .bubble-wrap {
@@ -60,7 +66,7 @@ body,
   margin-right: 36px;
 }
 
-form {
+.colors-wrap form {
   margin-top: 60px;
   display: flex;
   flex-direction: column;
@@ -95,5 +101,44 @@ form {
     color: white;
     padding: 3px 8px;
     margin-top: 16px;
+  }
+}
+
+.login-container{
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form form {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  
+  label {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    // padding: 4px 36px 4px 40px;
+  }
+
+  input {
+    margin-left: 10px;
+    width: 200px;
+  }
+
+  button {
+    border: none;
+    background-color: black;
+    color: white;
+    width: 100%;
+    padding: 3px 8px;
+    margin: 0 auto;
+  }
+
+  button:hover{
+    transform: translateY(1px);
+    background: #333333;
   }
 }
